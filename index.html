@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Superales Melaware & Japan Surplus</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #B91C1C;
+    --red-dark: #7F1D1D;
+    --red-light: #FEE2E2;
+    --gold: #B45309;
+    --gold-light: #FEF3C7;
+    --cream: #FDFAF4;
+    --ink: #1C1410;
+    --ink-soft: #4A3728;
+    --muted: #78716C;
+    --white: #FFFFFF;
+    --border: rgba(180,83,9,0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 2rem;
+    background: rgba(253,250,244,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    transition: box-shadow 0.3s;
+  }
+  nav.scrolled { box-shadow: 0 2px 24px rgba(185,28,28,0.08); }
+
+  .nav-logo {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--red);
+    letter-spacing: -0.02em;
+    display: flex; align-items: center; gap: 0.5rem;
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--ink); }
+
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    font-size: 0.875rem; font-weight: 500; color: var(--ink-soft);
+    text-decoration: none; letter-spacing: 0.02em;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--red); }
+
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+  .hamburger span { width: 22px; height: 2px; background: var(--ink); border-radius: 2px; transition: all 0.3s; }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+    background: var(--cream);
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 20% 80%, rgba(185,28,28,0.06) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 80% at 80% 20%, rgba(180,83,9,0.05) 0%, transparent 60%);
+  }
+
+  /* Japanese wave pattern */
+  .hero-pattern {
+    position: absolute; bottom: 0; left: 0; right: 0; height: 180px;
+    opacity: 0.06;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='60'%3E%3Cpath d='M0 30 Q30 0 60 30 Q90 60 120 30' fill='none' stroke='%23B91C1C' stroke-width='2'/%3E%3C/svg%3E");
+    background-repeat: repeat-x;
+    background-size: 120px 60px;
+  }
+
+  /* Torii gate SVG decoration */
+  .torii {
+    position: absolute; top: 8%; right: 6%;
+    opacity: 0.07; width: 160px;
+    animation: float 6s ease-in-out infinite;
+  }
+  .torii-left {
+    position: absolute; top: 15%; left: 4%;
+    opacity: 0.05; width: 100px;
+    animation: float 8s ease-in-out infinite reverse;
+    transform: scaleX(-1);
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+  }
+
+  /* Sakura petals */
+  .petal {
+    position: absolute;
+    width: 10px; height: 10px;
+    background: radial-gradient(circle at 40% 40%, #FBCFE8, #F9A8D4);
+    border-radius: 50% 0 50% 0;
+    opacity: 0;
+    animation: fall linear infinite;
+  }
+
+  @keyframes fall {
+    0% { opacity: 0; transform: translateY(-20px) rotate(0deg); }
+    10% { opacity: 0.7; }
+    90% { opacity: 0.4; }
+    100% { opacity: 0; transform: translateY(100vh) rotate(720deg) translateX(60px); }
+  }
+
+  .hero-content {
+    position: relative; z-index: 2;
+    text-align: center; padding: 2rem;
+    max-width: 740px;
+  }
+
+  .hero-badge {
+    display: inline-block; margin-bottom: 1.5rem;
+    font-size: 0.75rem; font-weight: 600; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--gold);
+    border: 1px solid rgba(180,83,9,0.3);
+    padding: 0.35rem 1rem; border-radius: 2rem;
+    background: var(--gold-light);
+    animation: fadeUp 0.8s ease both;
+  }
+
+  .hero-title {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 900;
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    animation: fadeUp 0.8s ease 0.1s both;
+  }
+  .hero-title em { color: var(--red); font-style: normal; }
+
+  .hero-sub {
+    margin-top: 1.25rem;
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
+    color: var(--muted);
+    font-weight: 300; line-height: 1.7;
+    animation: fadeUp 0.8s ease 0.2s both;
+  }
+
+  .hero-cta {
+    margin-top: 2.5rem;
+    display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+    animation: fadeUp 0.8s ease 0.3s both;
+  }
+
+  .btn-primary {
+    background: var(--red); color: white;
+    padding: 0.85rem 2.2rem; border-radius: 0.375rem;
+    font-size: 0.95rem; font-weight: 600; letter-spacing: 0.02em;
+    text-decoration: none; border: none; cursor: pointer;
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    box-shadow: 0 4px 16px rgba(185,28,28,0.25);
+    display: inline-flex; align-items: center; gap: 0.5rem;
+  }
+  .btn-primary:hover { background: var(--red-dark); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(185,28,28,0.35); }
+
+  .btn-outline {
+    background: transparent; color: var(--ink);
+    padding: 0.85rem 2.2rem; border-radius: 0.375rem;
+    font-size: 0.95rem; font-weight: 500;
+    text-decoration: none; border: 1.5px solid rgba(28,20,16,0.2); cursor: pointer;
+    transition: border-color 0.2s, color 0.2s, transform 0.15s;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+  }
+  .btn-outline:hover { border-color: var(--red); color: var(--red); transform: translateY(-2px); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── MARQUEE ── */
+  .marquee-wrap {
+    background: var(--red);
+    padding: 0.75rem 0; overflow: hidden;
+    border-top: 3px solid var(--gold);
+    border-bottom: 3px solid var(--gold);
+  }
+  .marquee-track {
+    display: flex; gap: 0;
+    animation: marquee 28s linear infinite;
+    white-space: nowrap; width: max-content;
+  }
+  .marquee-track span {
+    font-size: 0.82rem; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; color: white;
+    padding: 0 2rem;
+  }
+  .marquee-dot { color: rgba(255,255,255,0.5); }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* ── SECTION SHARED ── */
+  section { padding: 6rem 2rem; }
+
+  .section-label {
+    font-size: 0.72rem; font-weight: 600; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--gold);
+    margin-bottom: 0.75rem; display: block;
+  }
+
+  .section-title {
+    font-family: 'Noto Serif JP', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700; color: var(--ink);
+    line-height: 1.15; letter-spacing: -0.02em;
+  }
+
+  .section-divider {
+    width: 48px; height: 3px; background: var(--red);
+    margin: 1rem 0 0.5rem;
+    border-radius: 2px;
+  }
+
+  .container { max-width: 1140px; margin: 0 auto; }
+
+  /* ── PRODUCTS ── */
+  #products { background: white; }
+
+  .products-header { text-align: center; margin-bottom: 3.5rem; }
+  .products-header .section-divider { margin: 1rem auto 0; }
+
+  .products-filter {
+    display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap;
+    margin-bottom: 2.5rem;
+  }
+  .filter-btn {
+    padding: 0.45rem 1.1rem; border-radius: 2rem;
+    border: 1.5px solid var(--border);
+    background: transparent; color: var(--muted);
+    font-size: 0.82rem; font-weight: 500; cursor: pointer;
+    transition: all 0.2s; font-family: 'DM Sans', sans-serif;
+  }
+  .filter-btn.active, .filter-btn:hover {
+    background: var(--red); color: white; border-color: var(--red);
+  }
+
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .product-card {
+    border: 1px solid var(--border); border-radius: 1rem;
+    padding: 2rem 1.5rem; background: var(--cream);
+    cursor: pointer; transition: all 0.3s; position: relative;
+    overflow: hidden;
+  }
+  .product-card::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(185,28,28,0.04) 0%, transparent 60%);
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .product-card:hover {
+    border-color: rgba(185,28,28,0.4);
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px rgba(185,28,28,0.12);
+  }
+  .product-card:hover::before { opacity: 1; }
+
+  .product-icon {
+    font-size: 2.5rem; margin-bottom: 1rem; display: flex; align-items: center; justify-content: center;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    width: 64px; height: 64px; margin: 0 auto 1rem;
+  }
+  .product-icon svg { width: 100%; height: 100%; }
+  .product-card:hover .product-icon { transform: scale(1.35) rotate(-8deg); }
+
+  .product-name {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 1.15rem; font-weight: 700; color: var(--ink);
+    margin-bottom: 0.5rem;
+  }
+  .product-desc {
+    font-size: 0.85rem; color: var(--muted); line-height: 1.65;
+    margin-bottom: 1.25rem;
+  }
+  .product-tag {
+    display: inline-block; font-size: 0.7rem; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--red); background: var(--red-light);
+    padding: 0.25rem 0.65rem; border-radius: 1rem;
+    margin-bottom: 1rem;
+  }
+  .product-inquire {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    font-size: 0.82rem; font-weight: 600; color: var(--red);
+    border: 1.5px solid rgba(185,28,28,0.3); border-radius: 0.375rem;
+    padding: 0.5rem 1rem; text-decoration: none;
+    transition: all 0.2s; background: transparent;
+    font-family: 'DM Sans', sans-serif; cursor: pointer;
+  }
+  .product-inquire:hover { background: var(--red); color: white; border-color: var(--red); }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0; z-index: 200;
+    background: rgba(28,20,16,0.55); backdrop-filter: blur(4px);
+    align-items: center; justify-content: center; padding: 1rem;
+  }
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: white; border-radius: 1.25rem;
+    padding: 2.5rem; max-width: 480px; width: 100%;
+    position: relative;
+    animation: modalIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+  @keyframes modalIn {
+    from { opacity: 0; transform: scale(0.92) translateY(16px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .modal-close {
+    position: absolute; top: 1.25rem; right: 1.25rem;
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--cream); border: none; cursor: pointer;
+    font-size: 1.1rem; color: var(--muted);
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s;
+  }
+  .modal-close:hover { background: var(--red-light); color: var(--red); }
+
+  .modal-icon { font-size: 3rem; margin-bottom: 1rem; display: block; }
+  .modal-title {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem;
+    color: var(--ink);
+  }
+  .modal-desc { color: var(--muted); line-height: 1.7; margin-bottom: 1.75rem; font-size: 0.9rem; }
+
+  .modal-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+
+  /* ── WHY US ── */
+  #why { background: var(--cream); }
+
+  .why-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2rem; margin-top: 3rem;
+  }
+
+  .why-card {
+    padding: 2rem; border-radius: 1rem;
+    border: 1px solid var(--border);
+    background: white; transition: transform 0.3s, box-shadow 0.3s;
+    position: relative; overflow: hidden;
+  }
+  .why-card::after {
+    content: ''; position: absolute; bottom: 0; left: 0;
+    height: 3px; width: 0; background: var(--red);
+    transition: width 0.4s;
+  }
+  .why-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(185,28,28,0.1); }
+  .why-card:hover::after { width: 100%; }
+
+  .why-icon {
+    width: 52px; height: 52px; border-radius: 0.75rem;
+    background: var(--red-light); color: var(--red);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem; margin-bottom: 1.25rem;
+  }
+  .why-icon svg { width: 28px; height: 28px; }
+  .why-title {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 1.1rem; font-weight: 700; color: var(--ink);
+    margin-bottom: 0.5rem;
+  }
+  .why-desc { font-size: 0.875rem; color: var(--muted); line-height: 1.7; }
+
+  /* ── LIVE SELLING ── */
+  #live {
+    background: var(--red);
+    color: white; text-align: center;
+    position: relative; overflow: hidden;
+  }
+  #live::before {
+    content: ''; position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Ccircle cx='40' cy='40' r='35' fill='none' stroke='rgba(255,255,255,0.04)' stroke-width='1'/%3E%3C/svg%3E");
+    background-size: 80px 80px;
+  }
+
+  .live-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3);
+    padding: 0.4rem 1rem; border-radius: 2rem;
+    font-size: 0.8rem; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; margin-bottom: 1.5rem;
+  }
+  .live-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #FEF08A;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.4); }
+  }
+
+  #live .section-title { color: white; }
+
+  .live-desc {
+    max-width: 580px; margin: 1rem auto 2.5rem;
+    color: rgba(255,255,255,0.8); line-height: 1.7; font-size: 1rem;
+  }
+
+  .btn-white {
+    background: white; color: var(--red);
+    padding: 0.85rem 2.2rem; border-radius: 0.375rem;
+    font-size: 0.95rem; font-weight: 700; text-decoration: none;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  }
+  .btn-white:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
+
+  /* ── CONTACT ── */
+  #contact { background: white; }
+
+  .contact-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem; margin-top: 3rem;
+  }
+
+  .contact-card {
+    border: 1px solid var(--border); border-radius: 1rem;
+    padding: 1.75rem; text-align: center;
+    transition: border-color 0.2s, transform 0.2s;
+    text-decoration: none; color: inherit; display: block;
+    background: var(--cream);
+  }
+  .contact-card:hover { border-color: var(--red); transform: translateY(-4px); }
+
+  .contact-icon {
+    width: 48px; height: 48px; border-radius: 50%;
+    background: var(--red-light); color: var(--red);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem; margin: 0 auto 1rem;
+  }
+  .contact-icon svg { width: 24px; height: 24px; }
+  .contact-label {
+    font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--gold);
+    margin-bottom: 0.4rem; display: block;
+  }
+  .contact-value {
+    font-size: 0.9rem; font-weight: 600; color: var(--ink);
+    line-height: 1.5;
+  }
+  .contact-sub { font-size: 0.78rem; color: var(--muted); margin-top: 0.25rem; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--ink); color: rgba(255,255,255,0.6);
+    padding: 2.5rem 2rem; text-align: center;
+  }
+  .footer-logo {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 1.3rem; font-weight: 700; color: white;
+    margin-bottom: 0.5rem;
+  }
+  .footer-logo em { color: var(--red); font-style: normal; }
+  footer p { font-size: 0.82rem; line-height: 1.8; }
+  footer a { color: rgba(255,255,255,0.5); text-decoration: none; }
+  footer a:hover { color: white; }
+
+  /* ── LOADING SKELETON ── */
+  .skeleton {
+    background: linear-gradient(90deg, var(--cream) 25%, rgba(200,200,200,0.1) 50%, var(--cream) 75%);
+    background-size: 200% 100%;
+    animation: skeleton 1.5s infinite;
+  }
+  @keyframes skeleton {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+  .modal-icon.skeleton { width: 64px; height: 64px; border-radius: 50%; margin: 1rem auto; }
+  .modal-title.skeleton { height: 24px; width: 70%; border-radius: 4px; margin: 0.5rem auto 1rem; }
+  .modal-desc.skeleton { height: 80px; border-radius: 4px; width: 100%; }
+  .modal-actions.skeleton { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  .modal-actions.skeleton a { flex: 1; height: 40px; border-radius: 4px; border: none; }
+
+  /* ── FLOATING MSG BTN ── */
+  .float-btn {
+    position: fixed; bottom: 2rem; right: 2rem; z-index: 90;
+    width: 56px; height: 56px; border-radius: 50%;
+    background: var(--red); color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem; text-decoration: none;
+    box-shadow: 0 8px 24px rgba(185,28,28,0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+    animation: bounceIn 0.6s 1s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+  .float-btn:hover { transform: scale(1.1); box-shadow: 0 12px 32px rgba(185,28,28,0.5); }
+  .float-btn svg { width: 24px; height: 24px; }
+  @keyframes bounceIn {
+    from { opacity: 0; transform: scale(0.5); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  /* ── SCROLL REVEAL ── */
+  .reveal {
+    opacity: 0; transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* ── MOBILE ── */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.25rem; }
+    .nav-links { display: none; flex-direction: column; gap: 0; }
+    .nav-links.open {
+      display: flex; position: absolute; top: 100%; left: 0; right: 0;
+      background: rgba(253,250,244,0.98); border-bottom: 1px solid var(--border);
+      padding: 1rem 0;
+    }
+    .nav-links.open li a { display: block; padding: 0.75rem 1.5rem; }
+    .hamburger { display: flex; }
+
+    section { padding: 4rem 1.25rem; }
+    .hero-content { padding: 1.25rem; }
+    .torii, .torii-left { display: none; }
+    .modal-actions { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">⛩ Superales</a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#products">Products</a></li>
+    <li><a href="#why">Why Us</a></li>
+    <li><a href="#live">Live Selling</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger" onclick="toggleNav()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-pattern"></div>
+
+  <!-- Torii decorations -->
+  <svg class="torii" viewBox="0 0 160 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="10" y="30" width="140" height="12" rx="6" fill="#B91C1C"/>
+    <rect x="0" y="48" width="160" height="8" rx="4" fill="#B91C1C"/>
+    <rect x="28" y="56" width="16" height="140" rx="8" fill="#B91C1C"/>
+    <rect x="116" y="56" width="16" height="140" rx="8" fill="#B91C1C"/>
+    <rect x="36" y="90" width="88" height="6" rx="3" fill="#B91C1C" opacity="0.6"/>
+  </svg>
+
+  <svg class="torii-left" viewBox="0 0 160 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="10" y="30" width="140" height="12" rx="6" fill="#B91C1C"/>
+    <rect x="0" y="48" width="160" height="8" rx="4" fill="#B91C1C"/>
+    <rect x="28" y="56" width="16" height="140" rx="8" fill="#B91C1C"/>
+    <rect x="116" y="56" width="16" height="140" rx="8" fill="#B91C1C"/>
+    <rect x="36" y="90" width="88" height="6" rx="3" fill="#B91C1C" opacity="0.6"/>
+  </svg>
+
+  <!-- Petals generated by JS -->
+  <div id="petals"></div>
+
+  <div class="hero-content">
+    <span class="hero-badge">🌸 Japan Surplus Store · Davao del Sur</span>
+    <h1 class="hero-title">
+      <em>Superales</em><br>
+      Melaware &<br>
+      Japan Surplus
+    </h1>
+    <p class="hero-sub">High-quality, affordable products with a<br>unique touch of Japanese craftsmanship.</p>
+    <div class="hero-cta">
+      <a href="#products" class="btn-primary">🛍 Shop Now</a>
+      <a href="#live" class="btn-outline">📺 Watch Live</a>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track" id="marqueeTrack">
+    <span>🌸 We Ship Nationwide</span><span class="marquee-dot">✦</span>
+    <span>Japan Surplus Items</span><span class="marquee-dot">✦</span>
+    <span>Authentic Quality</span><span class="marquee-dot">✦</span>
+    <span>Live Selling on Facebook</span><span class="marquee-dot">✦</span>
+    <span>Pans · Plates · Towels · Mugs · Tea Sets</span><span class="marquee-dot">✦</span>
+    <span>🌸 We Ship Nationwide</span><span class="marquee-dot">✦</span>
+    <span>Japan Surplus Items</span><span class="marquee-dot">✦</span>
+    <span>Authentic Quality</span><span class="marquee-dot">✦</span>
+    <span>Live Selling on Facebook</span><span class="marquee-dot">✦</span>
+    <span>Pans · Plates · Towels · Mugs · Tea Sets</span><span class="marquee-dot">✦</span>
+  </div>
+</div>
+
+<!-- PRODUCTS -->
+<section id="products">
+  <div class="container">
+    <div class="products-header reveal">
+      <span class="section-label">Curated Collection</span>
+      <h2 class="section-title">Our Products</h2>
+      <div class="section-divider"></div>
+    </div>
+
+    <div class="products-filter reveal">
+      <button class="filter-btn active" data-filter="all">All Items</button>
+      <button class="filter-btn" data-filter="kitchen">Kitchen</button>
+      <button class="filter-btn" data-filter="tableware">Tableware</button>
+      <button class="filter-btn" data-filter="home">Home</button>
+    </div>
+
+    <div class="products-grid" id="productsGrid">
+      <!-- Injected by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- WHY CHOOSE US -->
+<section id="why">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">Our Promise</span>
+      <h2 class="section-title">Why Choose Superales?</h2>
+      <div class="section-divider"></div>
+    </div>
+    <div class="why-grid">
+      <div class="why-card reveal reveal-delay-1">
+        <div class="why-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="why-title">Genuine Japan Quality</div>
+        <p class="why-desc">Every item is sourced directly from Japan — authentic pre-loved goods with real Japanese craftsmanship and durability.</p>
+      </div>
+      <div class="why-card reveal reveal-delay-2">
+        <div class="why-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="6" width="15" height="12" rx="2"/><path d="M16 6v12M17 6h6v9h-6M19 18a2 2 0 1 0 4 0M7 18a2 2 0 1 0 4 0"/></svg>
+        </div>
+        <div class="why-title">Ships Nationwide</div>
+        <p class="why-desc">From Luzon to Mindanao, we deliver your orders anywhere in the Philippines — fast and reliable shipping.</p>
+      </div>
+      <div class="why-card reveal reveal-delay-3">
+        <div class="why-icon">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+        </div>
+        <div class="why-title">Live Selling Events</div>
+        <p class="why-desc">Join our Facebook Live sessions for exclusive deals, real-time Q&A, and the freshest arrivals from Japan.</p>
+      </div>
+      <div class="why-card reveal reveal-delay-4">
+        <div class="why-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><line x1="12" y1="5" x2="12" y2="9"/><line x1="12" y1="15" x2="12" y2="19"/></svg>
+        </div>
+        <div class="why-title">Affordable Prices</div>
+        <p class="why-desc">Premium quality at budget-friendly prices. Get more value with every purchase — quality you can feel, prices you'll love.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LIVE SELLING -->
+<section id="live">
+  <div class="container reveal">
+    <div class="live-badge"><span class="live-dot"></span> Live</div>
+    <h2 class="section-title">Join Our Facebook<br>Live Selling Events</h2>
+    <p class="live-desc">Discover exclusive deals and interact with us in real-time. Follow us on Facebook for our latest live streams, flash sales, and new arrivals straight from Japan!</p>
+    <a href="https://www.facebook.com/superalesmelawareandjapansurplus" target="_blank" class="btn-white">
+      👍 Follow on Facebook
+    </a>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">Reach Us</span>
+      <h2 class="section-title">Get in Touch</h2>
+      <div class="section-divider"></div>
+    </div>
+    <div class="contact-grid">
+      <a href="tel:09090512856" class="contact-card reveal reveal-delay-1">
+        <div class="contact-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        </div>
+        <span class="contact-label">Call Us</span>
+        <div class="contact-value">0909 051 2856</div>
+        <p class="contact-sub">Available Monday – Sunday</p>
+      </a>
+      <a href="mailto:clairejoycesuperales@yahoo.com.ph" class="contact-card reveal reveal-delay-2">
+        <div class="contact-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 6l10 7 10-7"/></svg>
+        </div>
+        <span class="contact-label">Email Us</span>
+        <div class="contact-value" style="font-size:0.78rem">clairejoycesuperales<br>@yahoo.com.ph</div>
+        <p class="contact-sub">We reply within 24 hours</p>
+      </a>
+      <a href="https://maps.app.goo.gl/hSocLmkasSG75SS7A" target="_blank" class="contact-card reveal reveal-delay-3">
+        <div class="contact-icon">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/></svg>
+        </div>
+        <span class="contact-label">Visit Us</span>
+        <div class="contact-value">Purok 2, Brgy. Sinayawan</div>
+        <p class="contact-sub">Hagonoy, Davao del Sur</p>
+      </a>
+      <a href="https://www.facebook.com/superalesmelawareandjapansurplus" target="_blank" class="contact-card reveal reveal-delay-4">
+        <div class="contact-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" fill="currentColor"/>
+          </svg>
+        </div>
+        <span class="contact-label">Facebook</span>
+        <div class="contact-value">Superales Melaware<br>and Japan Surplus</div>
+        <p class="contact-sub">Like & Follow our page</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">⛩ <em>Superales</em> Melaware and Japan Surplus</div>
+  <p>Purok 2, Barangay Sinayawan, Hagonoy, Davao del Sur, Philippines</p>
+  <p style="margin-top:0.5rem">© 2025 Superales Trading. All rights reserved. Made with ❤️</p>
+</footer>
+
+<!-- FLOATING MESSENGER -->
+<a href="https://m.me/superalesmelawareandjapansurplus" target="_blank" class="float-btn" title="Message us on Facebook">
+  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+</a>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal" onclick="closeModal(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="modal-icon" id="modalIcon"></div>
+    <h3 class="modal-title" id="modalTitle"></h3>
+    <p class="modal-desc" id="modalDesc"></p>
+    <div class="modal-actions">
+      <a id="modalFB" href="#" target="_blank" class="btn-primary">
+        <svg viewBox="0 0 24 24" fill="currentColor" style="width:18px;height:18px"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        Inquire on Facebook
+      </a>
+      <a href="tel:09090512856" class="btn-outline">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        Call Us
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+const getSVGIcon = (type) => {
+  const icons = {
+    pan: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 6v12M6 12h12"/></svg>',
+    plate: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2v20M2 12h20"/></svg>',
+    towel: '<svg viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="4" width="18" height="3" rx="1"/><rect x="3" y="9" width="18" height="10" rx="2"/><path d="M8 20v2M12 20v2M16 20v2"/></svg>',
+    coffee: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h18v9c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V8z"/><rect x="17" y="8" width="3" height="5" rx="1"/><path d="M6 5h12M6 17v2M9 17v2M12 17v2M15 17v2"/></svg>',
+    tea: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="14" r="8"/><path d="M12 6v4M8 10h8"/><path d="M15 18c1 1 2 1 3 0"/></svg>',
+    cup: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 8h-1V5c0-1-1-2-2-2H6c-1 0-2 1-2 2v3H3c0 0 0 4 0 8 0 2 1 3 2 3h14c1 0 2-1 2-3V8z"/><path d="M9 17v3M12 17v3M15 17v3"/></svg>',
+    pot: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h18v8c0 2-1 3-2 3H5c-1 0-2-1-2-3V8z"/><circle cx="12" cy="12" r="3" fill="currentColor" opacity="0.2"/><path d="M5 3h14v3M7 19l2 3M12 19v3M17 19l-2 3"/></svg>',
+    check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>',
+    truck: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="6" width="15" height="12" rx="2"/><path d="M16 6v12M17 6h6v9h-6M19 18a2 2 0 1 0 4 0M7 18a2 2 0 1 0 4 0"/></svg>',
+    money: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><line x1="12" y1="5" x2="12" y2="9"/><line x1="12" y1="15" x2="12" y2="19"/></svg>',
+    message: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>',
+    phone: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>',
+    email: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 6l10 7 10-7"/></svg>',
+    location: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z M12 20c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/><circle cx="12" cy="12" r="3"/></svg>',
+    arrow: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg>',
+    facebook: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>'
+  };
+  return icons[type] || icons.check;
+};
+
+const products = [
+  { emoji:'🍳', name:'Pans', tag:'Kitchen', category:'kitchen', desc:'High-quality Japanese cookware with excellent heat distribution and durability. Perfect for everyday cooking and professional use.' },
+  { emoji:'🍽️', name:'Plates', tag:'Tableware', category:'tableware', desc:'Elegant ceramic plates with traditional Japanese design. Ideal for dining and special occasions — beautiful yet functional.' },
+  { emoji:'🛁', name:'Towels', tag:'Home', category:'home', desc:'Premium soft towels made with authentic Japanese cotton. Highly absorbent and long-lasting — luxury feel at every use.' },
+  { emoji:'☕', name:'Mugs', tag:'Tableware', category:'tableware', desc:'Beautiful ceramic mugs perfect for coffee and tea. Each piece reflects Japanese artistry and warmth.' },
+  { emoji:'🍵', name:'Tea Sets', tag:'Tableware', category:'tableware', desc:'Traditional Japanese tea sets for authentic tea ceremonies. Complete and ready to use — bring Japan to your table.' },
+  { emoji:'🫗', name:'Cups & Saucers', tag:'Tableware', category:'tableware', desc:'Delicate porcelain cups paired with matching saucers. Perfect for tea or coffee service — elegantly crafted.' },
+  { emoji:'🪴', name:'Clay Pots', tag:'Kitchen', category:'kitchen', desc:'Authentic clay pots used in traditional Japanese cooking. Excellent for brewing and serving soups, teas, and stews.' },
+];
+
+function renderProducts(filter = 'all') {
+  const grid = document.getElementById('productsGrid');
+  const filtered = filter === 'all' ? products : products.filter(p => p.category === filter);
+  grid.innerHTML = filtered.map((p, i) => `
+    <div class="product-card reveal" style="transition-delay:${i*0.06}s" onclick="openModal('${p.emoji}','${p.name}','${p.desc}')">
+      <div class="product-icon">${p.emoji}</div>
+      <span class="product-tag">${p.tag}</span>
+      <div class="product-name">${p.name}</div>
+      <p class="product-desc">${p.desc}</p>
+      <button class="product-inquire">💬 Inquire</button>
+    </div>
+  `).join('');
+  observeReveal();
+}
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderProducts(btn.dataset.filter);
+  });
+});
+
+function openModal(emoji, title, desc) {
+  const modal = document.getElementById('modal');
+  const iconEl = document.getElementById('modalIcon');
+  const titleEl = document.getElementById('modalTitle');
+  const descEl = document.getElementById('modalDesc');
+  const actionsEl = document.querySelector('.modal-actions');
+  
+  // Show loading skeleton
+  iconEl.textContent = '';
+  iconEl.classList.add('skeleton');
+  titleEl.classList.add('skeleton');
+  titleEl.style.width = '100%';
+  descEl.classList.add('skeleton');
+  actionsEl.classList.add('skeleton');
+  
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  
+  // Simulate loading and then show content after 400ms
+  setTimeout(() => {
+    iconEl.textContent = emoji;
+    iconEl.classList.remove('skeleton');
+    titleEl.textContent = title;
+    titleEl.classList.remove('skeleton');
+    titleEl.style.width = 'auto';
+    descEl.textContent = desc;
+    descEl.classList.remove('skeleton');
+    actionsEl.classList.remove('skeleton');
+    document.getElementById('modalFB').href = 'https://www.facebook.com/superalesmelawareandjapansurplus';
+  }, 400);
+}
+
+function closeModal(e) {
+  if (!e || e.target === document.getElementById('modal') || e.target.classList.contains('modal-close')) {
+    document.getElementById('modal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+}
+
+// Scroll to top on page load and on nav scroll
+window.addEventListener('load', () => { window.scrollTo(0, 0); });
+window.addEventListener('scroll', () => { document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 40); });
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// Sakura petals
+const petalContainer = document.getElementById('petals');
+for (let i = 0; i < 14; i++) {
+  const p = document.createElement('div');
+  p.className = 'petal';
+  const size = 8 + Math.random() * 12;
+  p.style.cssText = `
+    width:${size}px; height:${size}px;
+    left:${Math.random()*100}%;
+    animation-duration:${6 + Math.random()*10}s;
+    animation-delay:${Math.random()*8}s;
+    opacity:0;
+  `;
+  petalContainer.appendChild(p);
+}
+
+// Scroll reveal
+function observeReveal() {
+  const els = document.querySelectorAll('.reveal:not(.visible)');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  els.forEach(el => obs.observe(el));
+}
+
+function toggleNav() {
+  document.getElementById('navLinks').classList.toggle('open');
+}
+
+renderProducts();
+observeReveal();
+</script>
+</body>
+</html>
