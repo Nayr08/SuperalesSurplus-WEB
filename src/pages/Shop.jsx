@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import CartDrawer from '../components/CartDrawer'
+import HeroCarousel from '../components/HeroCarousel'
 import { supabase } from '../lib/supabase'
 import { useCart } from '../context/CartContext'
 import './Shop.css'
@@ -257,48 +258,8 @@ export default function Shop() {
               <button className="btn-hero" onClick={switchToCatalog}>Browse All Items</button>
             </div>
             <div className="hero-right">
-              {/* Auto-Rotating Product Images - Pans, Plates, Mugs */}
-              {!loading && carouselProducts.length > 0 && (
-                <div className="hero-auto-carousel">
-                  {carouselProducts.map((product, index) => (
-                    <div
-                      key={product.id}
-                      className={`hero-image-slide ${index === currentImageIndex ? 'active' : ''}`}
-                    >
-                      {imageErrors[product.id] || !product.image_url ? (
-                        <div style={{
-                          width: '100%',
-                          height: '100%',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          backgroundColor: 'var(--cream)',
-                          fontSize: '4rem',
-                        }}>
-                          {product.emoji || '🎁'}
-                        </div>
-                      ) : (
-                        <img
-                          src={product.image_url}
-                          alt={`Product ${index + 1}`}
-                          onError={() => handleImageError(product.id)}
-                        />
-                      )}
-                    </div>
-                  ))}
-
-                  {/* Carousel Indicators */}
-                  <div className="carousel-indicators">
-                    {carouselProducts.map((_, index) => (
-                      <div
-                        key={index}
-                        className={`indicator ${index === currentImageIndex ? 'active' : ''}`}
-                        onClick={() => setCurrentImageIndex(index)}
-                      ></div>
-                    ))}
-                  </div>
-                </div>
-              )}
+              {/* Hero Carousel with Static Images */}
+              <HeroCarousel />
             </div>
           </div>
 
